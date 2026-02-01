@@ -4,7 +4,7 @@
    ========================================= */
 @media (max-width: 1024px) {
   /* Global container widths */
-  .header-container,
+  /* .header-container,
   .hero-container,
   .about-us-container,
   .service-container,
@@ -18,9 +18,10 @@
   .transform-container,
   .footer-container,
   .footer-end-container {
-    width: 94%;
+    width: 100%;
     margin: auto;
-  }
+    height: auto;
+  } */
 
   /* Hero */
   #hero .video video {
@@ -35,6 +36,8 @@
     padding: 20px 40px 0 40px;
   }
   .hero-stats {
+    display: flex;
+    position: relative;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
@@ -593,11 +596,21 @@ SMALL PHONES (max-width: 430px)
   .logo a {
     font-size: 1.2rem;
   }
-
+ #hero .video video {
+    height: 100vh;
+  }
+  .hero-container {
+    width: 100%;
+    margin: auto;
+    flex-direction: column;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    height: 100vh;
+  }
   /* HERO */
   .hero-content h1 {
     font-size: 26px;
-    padding: 50px 8px 8px 8px;
   }
   .hero-content p {
     font-size: 14px;
@@ -700,5 +713,24 @@ SMALL PHONES (max-width: 430px)
   }
   .footer-box {
     margin-bottom: 16px;
+  }
+}
+
+
+/* ===== Extra: Hero stats overflow + nav alignment tweaks ===== */
+@media (max-width: 576px){
+  .hero-stats{
+    gap: 14px;
+    padding: 18px 10px;
+  }
+  .hero-stats > div{
+    flex: 1 1 120px;
+    min-width: 120px;
+    max-width: 100%;
+  }
+}
+@media (max-width: 992px){
+  nav ul{
+    align-items: flex-end;
   }
 }
