@@ -3,33 +3,59 @@ document.addEventListener("DOMContentLoaded", () => {
   const header = document.querySelector("header");
   const nav = document.querySelector("header nav");
   const toggle = document.querySelector(".toggle-menu");
-  const toTopBtn = document.getElementById("toTopBtn");
+  // flexible selector for the to-top button
+  const toTopBtn = document.getElementById("toTopBtn") || document.querySelector(".to-top, .toTopBtn, .to-top-btn");
+  // target the about section so button shows when About begins
+  const aboutSection = document.getElementById("about-us") || document.querySelector("#about-us, .about-us, .about-section");
 
   /* Sticky header on scroll */
   window.addEventListener("scroll", () => {
     if (!header) return;
-    header.classList.toggle("scrolled", window.scrollY > 30);
+    // add `sticky` class when scrolled (CSS controls the sticky background)
+    header.classList.toggle("sticky", window.scrollY > 30);
 
     if (toTopBtn) {
-      toTopBtn.classList.toggle("show", window.scrollY > 350);
+      let show = false;
+      if (aboutSection) {
+        // show once we've scrolled to the top of the About section (account for header height)
+        const headerHeight = header.offsetHeight || 80;
+        show = window.scrollY >= Math.max(0, aboutSection.offsetTop - headerHeight - 20);
+      } else {
+        show = window.scrollY > 350;
+      }
+      toTopBtn.classList.toggle("show", show);
     }
   });
 
   /* Mobile menu toggle */
   if (toggle && nav) {
-    toggle.addEventListener("click", () => {
-      nav.classList.toggle("active");
+    // central toggle method so behavior is consistent
+    const toggleNav = () => {
+      const opened = nav.classList.toggle("active");
+      // reflect state on the toggle button for accessibility
+      toggle.setAttribute("aria-expanded", opened ? "true" : "false");
+    };
+
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleNav();
     });
 
-    // close menu when clicking any link
+    // close menu when clicking any link inside nav
     nav.querySelectorAll("a").forEach((a) => {
-      a.addEventListener("click", () => nav.classList.remove("active"));
+      a.addEventListener("click", () => {
+        nav.classList.remove("active");
+        toggle.setAttribute("aria-expanded", "false");
+      });
     });
 
-    // close when clicking outside
+    // close when clicking outside the nav or toggle
     document.addEventListener("click", (e) => {
       const isInside = nav.contains(e.target) || toggle.contains(e.target);
-      if (!isInside) nav.classList.remove("active");
+      if (!isInside) {
+        nav.classList.remove("active");
+        toggle.setAttribute("aria-expanded", "false");
+      }
     });
   }
 

@@ -12,10 +12,10 @@
     --color-p: #342c26;
     --color-h: #2c1607;
     --color-accent: #e96308;
-    --color-accent-const: rgba(251, 182, 140, 0.512);
+    --color-accent-const: rgba(248, 138, 69, 0.385);
     --color-bg: #ffffff;
     --color-const: rgba(242, 239, 239, 0.632);
-    --color-box-shadow:rgba(103, 101, 101, 0.831);
+    --color-box-shadow:rgba(103, 101, 101, 0.876);
 }
 
 h1,h2,h3,
@@ -84,8 +84,10 @@ header{
     z-index: 1000;
 }
 
+/* sticky header uses transparent background so hero video stays visible */
 header.sticky{
-    background-color: hsla(21, 66%, 29%, 0.623);
+    background-color: var(--color-accent-const);
+    backdrop-filter: blur(10px);
 }
 .header-container {
     width: 1300px;
@@ -95,7 +97,7 @@ header.sticky{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: transparent;
+    /* background-color: transparent; */
     padding: 20px 0;
 }
 .toggle-menu{
@@ -117,7 +119,7 @@ nav ul li {
     
 }
 nav ul li a {
-    color: var(--color-accent-const);
+    color: var(--color-accent);
     font-size: 15px;
     font-weight: 400;
     transition: all .4s;
@@ -146,10 +148,12 @@ nav ul li button:hover {
 
 /* #hero  */
 #hero {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    margin: auto;
-    padding-top:20px ;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
 }
 #hero .video {
     position: absolute;
@@ -162,20 +166,22 @@ nav ul li button:hover {
     z-index: -100;
 }
 #hero .video video {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     object-fit: cover;
 }
 .hero-container {
     display: flex;
     flex-direction: column;
-    width: 1170px;
-    height:auto;
-    margin: auto;
+    width: 100%;
+    max-width: 1170px;
+    height: 100%;
+    margin: 0 auto;
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 40px;
+    gap: 24px;
+    padding: 0px 16px;
 }
 .hero-content{
   display: flex;
@@ -184,13 +190,17 @@ nav ul li button:hover {
   height: auto;
   width: 100%;
   margin: auto;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
 }
 
 .hero-content h1 {
     font-size: 60px;
     font-weight: 400;
     color: var(--color-bg);
-    padding-top: 65px;
+   
     flex-shrink: 3;
     word-spacing: -1px;
     letter-spacing: -1.5px;
@@ -199,7 +209,7 @@ nav ul li button:hover {
     font-size: 20px;
     color: var(--color-bg);
     text-align: center;
-    padding: 20px 10px;
+    padding-top: 90px;
     font-weight: 400;
     line-height: 30px;
     word-spacing: 1px;
@@ -241,13 +251,13 @@ nav ul li button:hover {
     transform: translateY(-2px);
 }
 .hero-stats{
-    height:auto-fit;
+    height:auto;
     width: 100%;
     margin: auto;
     display:flex;
     flex-direction: row;
     justify-content: space-evenly;
-    padding: 40px 0;
+    padding: 40px 0 0 0;
     align-items: center;
     z-index: 1;
     backdrop-filter:blur(5.1px);
@@ -403,6 +413,38 @@ nav ul li button:hover {
 
 .about-image img:hover {
     transform: scale(1.01);
+}
+
+/* To-top button styling (visible when .show is added by JS) */
+#toTopBtn, .to-top, .toTopBtn, .to-top-btn {
+    position: fixed;
+    right: 24px;
+    bottom: 40px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+    pointer-events: none;
+    transition: opacity .28s ease, transform .28s ease, background-color .2s ease;
+    z-index: 1100;
+}
+
+.to-top.show, .toTopBtn.show, .to-top-btn.show, #toTopBtn.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+#toTopBtn:hover, .to-top:hover, .toTopBtn:hover, .to-top-btn:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 75%, black 10%);
+    transform: translateY(-4px) scale(1.02);
 }
 
 .bades {
@@ -1829,19 +1871,8 @@ footer {
     flex-wrap: wrap;
     gap: 18px;
     padding: 24px 12px;
-}
-/* .hero-stats > div{
-    width: calc(25% - 12px);
-    height: auto;
-    text-align: center;
-    padding: 20px 0;
-    border-radius: 10px;
-    transition: transform .35s ease, box-shadow .35s ease;
-    box-sizing: border-box;
-} */
-.hero-stats > div:hover{
-    transform: translateY(-4px);
-
+    justify-content: center;
+    object-fit: contain;
 }
 .hero-stats span{
     line-height: 1.1;
@@ -1862,7 +1893,7 @@ header nav{
     transition: transform .35s ease, opacity .35s ease;
 }
 header nav.active{
-    display: block !important;
+    display: block;
 }
 @media (max-width: 992px){
     header .header-container{
@@ -1875,20 +1906,22 @@ header nav.active{
         top: 100%;
         right: -10px;
         width: min(320px, 92vw);
-        background: color-mix(in srgb, var(--color-box-shadow), transparent 50%);
+        height: 90vh;
+       background:var(--color-box-shadow);
         backdrop-filter: blur(10px);
         border-radius: 12px;
         padding: 18px 16px;
         transform: translateY(12px);
-        opacity: 0;
         display: none;
         z-index: 999;
         box-shadow: 0 14px 45px color-mix(in srgb, var(--color-primary), transparent 70%);
     }
     header nav.active{
         transform: translateY(0);
-        opacity: 1;
     }
+
+    /* Media rules moved to css/media.css for clarity */
+
     header nav ul{
         display: flex;
         flex-direction: column;

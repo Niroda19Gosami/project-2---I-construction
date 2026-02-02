@@ -3,33 +3,13 @@
    1) TABLET & SMALL LAPTOP (max-width: 1024px)
    ========================================= */
 @media (max-width: 1024px) {
-  /* Global container widths */
-  /* .header-container,
-  .hero-container,
-  .about-us-container,
-  .service-container,
-  .service-info-container,
-  .cta-section-container,
-  .projects-container,
-  .testimonials-container,
-  .certifications-container,
-  .team-container,
-  #transform .section-info,
-  .transform-container,
-  .footer-container,
-  .footer-end-container {
-    width: 100%;
-    margin: auto;
-    height: auto;
-  } */
-
   /* Hero */
   #hero .video video {
     height: 100vh;
   }
   .hero-content h1 {
     font-size: 42px;
-    padding-top: 80px;
+    padding-top: 40px;
   }
   .hero-content p {
     font-size: 18px;
@@ -202,7 +182,7 @@
   }
   .hero-container {
     width: 90%;
-    margin: auto;
+    margin: 40px auto;
     flex-direction: column;
     gap: 20px;
     flex-wrap: wrap;
@@ -216,8 +196,8 @@
   }
 
   .hero-content h1 {
+    padding-top: 20px;
     font-size: 32px;
-    padding: 40px 10px 10px 10px;
   }
 
   .hero-content p {
@@ -226,15 +206,17 @@
   }
 
   .hero-content-button {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
-    margin-top: 20px;
+    justify-content: center;
   }
 
   .hero-content #msgBtn,
   .hero-content #msgBtn2 {
-   font-size: 16px;
-   width: 260px;
+   font-size:clamp(14px, 4vw, 16px);
+   width: 40vw;
+   text-align: center;
+   padding: 12px 0;
   }
 
   .hero-stats {
@@ -242,6 +224,7 @@
     flex-wrap: wrap;
     gap: 20px;
     justify-content:center;
+    margin-top: 30px;
   }
   .hero-stats span {
     font-size: 26px;
@@ -585,6 +568,174 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+}
+
+/* =========================================
+   NAV / HEADER: MOBILE SPECIFIC (max-width: 992px)
+   Moved from `style.css` to keep responsive rules centralized.
+   Kept intentionally simple and readable.
+   ========================================= */
+@media (max-width: 992px) {
+  /* header container sizing */
+  header .header-container{
+    width: 92%;
+    padding: 16px 0;
+    position: relative;
+  }
+
+  /* mobile nav panel (slide-down panel on the right, not fullscreen) */
+  header nav{
+    position: absolute;
+    top: 100%;
+    right: 10px;
+    width: 70vw; /* fixed width for mobile panel */
+    max-width: 360px;
+    height: 80vh; /* occupy most of the height, but not fullscreen */
+    background: color-mix(in srgb, var(--color-box-shadow), transparent 50%);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 18px 16px;
+    transform: translateY(12px);
+    display: none;
+    z-index: 999;
+    box-shadow: 0 14px 45px color-mix(in srgb, var(--color-primary), transparent 70%);
+    overflow-y: auto; /* allow the nav itself to scroll */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* active state for the nav (shown by JS) */
+  header nav.active{
+    transform: translateY(0);
+    display: block;
+  }
+
+  /* ensure the to-top button sits behind the mobile nav panel */
+  #toTopBtn, .to-top, .toTopBtn, .to-top-btn {
+    z-index: 800; /* less than header nav (999) so nav overlays the button */
+  }
+
+  /* keep blur when header becomes sticky */
+  header.sticky nav,
+  header.sticky nav.active{
+    background: color-mix(in srgb, var(--color-box-shadow), transparent 50%);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  /* (no fullscreen variant by default) */
+  /* allow the page to keep scrolling while the mobile panel is open */
+}
+
+/* =========================================
+   Adjustments for tablet / small screens
+   - Target: 768px and below (typical tablets)
+   ========================================= */
+@media (max-width: 768px) {
+  /* Keep hero full-viewport on tablet but scale internal text to fit */
+  #hero {
+    height: 100vh; /* keep 100vh for all screens */
+  }
+  #hero .video {
+    height: 100vh;
+  }
+  #hero .video video {
+    height: 100vh;
+    object-fit: cover;
+  }
+  .hero-content h1 {
+    font-size: 34px;
+    line-height: 1.08;
+  }
+  .hero-content p {
+    font-size: 15px;
+    padding: 10px 12px;
+    line-height: 1.4;
+  }
+
+  /* Hero stats: stack neatly and reduce sizes */
+  .hero-stats {
+    padding: 14px 12px;
+    gap: 12px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-stats > div {
+    min-width: 120px;
+    flex: 1 1 120px;
+    text-align: center;
+  }
+  .hero-stats span {
+    font-size: 26px;
+    line-height: 36px;
+  }
+  .hero-stats p {
+    font-size: 12px;
+  }
+
+  /* Footer: tighter spacing and stacked layout */
+  footer {
+    padding: 28px 12px;
+  }
+  .footer-container {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 12px;
+  }
+  .footer-end-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    text-align: center;
+  }
+}
+
+/* =========================================
+   Small phones: 480px and below
+   - Target: compact spacing, readable fonts
+   ========================================= */
+@media (max-width: 480px) {
+  /* Hero: keep media compact */
+  #hero .video {
+    height: 100vh;
+  }
+  #hero .video video {
+    height: 100vh;
+  }
+  .hero-content h1 {
+    font-size: 26px;
+  }
+  .hero-content p {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  /* Hero stats: two per row for very small screens */
+  .hero-stats {
+    gap: 10px;
+    padding: 12px 8px;
+  }
+  .hero-stats > div {
+    flex: 1 1 45%;
+    min-width: 120px;
+  }
+  .hero-stats span {
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .hero-stats p {
+    font-size: 11px;
+  }
+
+  /* Footer: compact text */
+  .footer-container {
+    gap: 12px;
+  }
+  .footer-box p {
+    font-size: 14px;
   }
 }
 
