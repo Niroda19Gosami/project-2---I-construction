@@ -87,7 +87,6 @@ header{
 /* sticky header uses transparent background so hero video stays visible */
 header.sticky{
     background-color: var(--color-accent-const);
-    backdrop-filter: blur(10px);
 }
 .header-container {
     width: 1300px;
