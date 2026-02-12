@@ -83,4 +83,60 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   revealEls.forEach((el) => io.observe(el));
+
+  /* Stats counters (run once when 40% visible) */
+  const animateCounter = (el) => {
+    if (el.dataset.counted === "true") return;
+
+    const start = Number(el.dataset.start || 0);
+    const target = Number(el.dataset.target || 0);
+    const suffix = el.dataset.suffix || "";
+    const duration = 1600;
+    const startTime = performance.now();
+
+    const update = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const value = Math.floor(start + (target - start) * progress);
+      el.textContent = `${value}${suffix}`;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = `${target}${suffix}`;
+        el.dataset.counted = "true";
+      }
+    };
+
+    requestAnimationFrame(update);
+  };
+
+  const initCounterSection = (sectionSelector) => {
+    const section = document.querySelector(sectionSelector);
+    if (!section) return;
+
+    const counters = section.querySelectorAll("span[data-target]");
+    if (!counters.length) return;
+
+    counters.forEach((el) => {
+      const start = Number(el.dataset.start || 0);
+      const suffix = el.dataset.suffix || "";
+      el.textContent = `${start}${suffix}`;
+    });
+
+    const sectionObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          counters.forEach((el) => animateCounter(el));
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    sectionObserver.observe(section);
+  };
+
+  initCounterSection(".hero-stats");
+  initCounterSection(".certifications-stat");
 });
